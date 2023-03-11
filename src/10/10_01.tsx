@@ -82,3 +82,17 @@ export const updateCompany = (u: UserWithCompaniesType, id: number, companyToCha
         companies: u.companies.map(c => c.id === id ? {...c, title: companyToChange} : c)
     }
 }
+
+export type CompaniesType = {
+    [id: string]: Array<{ id: number, title: string }>
+}
+
+export function changeCompany(companies: CompaniesType,
+                              userName: string,
+                              companyId: number,
+                              newTitle: string) {
+    return {
+        ...companies,
+        [userName]: companies[userName].map(c => c.id === companyId ? {...c, title: newTitle} : c)
+    }
+}

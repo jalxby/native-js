@@ -1,6 +1,8 @@
 import {
     addCompany,
     addNewBooks,
+    changeCompany,
+    CompaniesType,
     laptopUpgrade,
     makeHairStyle,
     moveUser,
@@ -8,7 +10,8 @@ import {
     removeBook,
     updateBook,
     updateCompany,
-    UserType, UserTypes,
+    UserType,
+    UserTypes,
     UserWithBooksType,
     UserWithCompaniesType,
     UserWithLaptopType
@@ -290,4 +293,31 @@ test('update company', () => {
         ]
     )
 
+})
+
+test('update company in map', () => {
+    let user: UserWithLaptopType & UserWithBooksType = {
+        name: 'Alexander',
+        hair: 36,
+        address: {
+            city: 'Gdansk',
+            house: 16,
+        },
+        laptop: {title: 'Lenovo'},
+        books: ['css', 'html', 'js', 'react'],
+
+    }
+
+    let companies: CompaniesType = {
+        'Alexander': [{id: 1, title: 'Dserver'}, {id: 2, title: 'It-Incubator'}],
+        'Bob': [{id: 1, title: 'It-Incubator'}],
+    }
+
+    const updatedCompany:CompaniesType = changeCompany(companies, user.name, 1, 'Amazon')
+    console.log(updatedCompany)
+    expect(updatedCompany[user.name][0].title).toBe('Amazon')
+    expect(companies[user.name][0].title).toBe('Dserver')
+    expect(companies).not.toBe(updatedCompany)
+    expect(companies['Alexander']).not.toBe(updatedCompany['Alexander'])
+    expect(companies['Bob']).toBe(updatedCompany['Bob'])
 })
